@@ -1,0 +1,3 @@
+6.1
+If users choose "Cancel", the program will return the default value of JOptionPane.CLOSED_OPTION which is -1.
+To customize the options, you can modify the method call to 'showConfirmDialog()'.
