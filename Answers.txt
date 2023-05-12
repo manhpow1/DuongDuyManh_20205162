@@ -1,3 +1,8 @@
+Week2
 Yes, Java allows you to create multiple constructor methods for a class, each with a different parameter list, as long as the parameter lists are unique. 
 This is known as constructor overloading. 
 So, you can create a constructor to build a DVD by title and another constructor to build a DVD by category without any issues.
+
+Week3
+In Java, arguments are passed by value. This means that when you pass a variable as an argument to a method, the value of the variable is copied and passed to the method, rather than a reference to the variable itself. Any changes made to the parameter inside the method are not reflected outside of the method, since only a copy of the original value was passed.
+However, when it comes to objects in Java, the reference to the object is passed by value. This means that when you pass an object to a method, a copy of the reference to the object is passed, but the object itself is not copied. So changes made to the object inside the method are visible outside of the method, since both the original reference and the copy refer to the same object in memory. This can sometimes lead to confusion and make it appear as if Java is pass by reference, but in reality it is still pass by value.
