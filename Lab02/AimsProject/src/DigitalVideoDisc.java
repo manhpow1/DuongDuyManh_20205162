@@ -65,4 +65,12 @@ public class DigitalVideoDisc {
     public static void setNbDigitalVideoDiscs(int nbDigitalVideoDiscs) {
         DigitalVideoDisc.nbDigitalVideoDiscs = nbDigitalVideoDiscs;
     }
+
+    public String toString() {
+        return String.format("DVD - %s - %s - %s - %d: %.2f $", title, category, director, length, cost);
+    }
+
+    public boolean isMatch(String title) {
+        return this.title.equalsIgnoreCase(title);
+    }
 }

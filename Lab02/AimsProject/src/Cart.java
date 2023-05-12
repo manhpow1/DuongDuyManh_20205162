@@ -1,14 +1,16 @@
+import java.util.ArrayList;
 public class Cart {
     public static final int MAX_NUMBERS_ORDERED = 20;
     private int qtyOrdered;
-    private DigitalVideoDisc[] itemsOrdered = new DigitalVideoDisc[MAX_NUMBERS_ORDERED];
+    private ArrayList<DigitalVideoDisc> itemsOrdered = new ArrayList<>();
 
     public void addDigitalVideoDisc(DigitalVideoDisc disc) {
         if (qtyOrdered == MAX_NUMBERS_ORDERED) {
             System.out.println("The cart is almost full.");
             return;
         }
-        itemsOrdered[qtyOrdered++] = disc;
+        itemsOrdered.add(disc);
+        qtyOrdered++;
         System.out.println("The disc has been added.");
     }
     /*  public void addDigitalVideoDisc(DigitalVideoDisc[] dvdList) {
@@ -41,18 +43,9 @@ public class Cart {
         }
     }*/
     public void removeDigitalVideoDisc(DigitalVideoDisc disc) {
-        boolean found = false;
-        for (int i = 0; i < qtyOrdered; i++) {
-            if (itemsOrdered[i].equals(disc)) {
-                found = true;
-                for (int j = i; j < qtyOrdered - 1; j++) {
-                    itemsOrdered[j] = itemsOrdered[j + 1];
-                }
-                qtyOrdered--;
-                break;
-            }
-        }
+        boolean found = itemsOrdered.remove(disc);
         if (found) {
+            qtyOrdered--;
             System.out.println("The disc has been removed.");
         } else {
             System.out.println("The disc is not found.");
@@ -62,8 +55,54 @@ public class Cart {
     public float totalCost() {
         float total = 0;
         for (int i = 0; i < qtyOrdered; i++) {
-            total += itemsOrdered[i].getCost();
+            total += itemsOrdered.get(i).getCost();
         }
         return total;
+    }
+
+    public void print() {
+        System.out.println("***********************CART***********************");
+        System.out.println("Ordered Items:");
+        double totalCost = 0;
+        for (int i = 0; i < itemsOrdered.size(); i++) {
+            DigitalVideoDisc dvd = itemsOrdered.get(i);
+            System.out.printf("%d. DVD - %s - %s - %s - %d: %.2f $\n",
+                    i+1, dvd.getTitle(), dvd.getCategory(), dvd.getDirector(), dvd.getLength(), dvd.getCost());
+            totalCost += dvd.getCost();
+        }
+        System.out.printf("Total cost: %.2f $\n", totalCost);
+        System.out.println("***************************************************");
+    }
+
+    public void searchByID(int id) {
+        for (int i = 0; i < itemsOrdered.size(); i++) {
+            DigitalVideoDisc dvd = itemsOrdered.get(i);
+            if (dvd.getId() == id) {
+                System.out.printf("DVD found: %s - %s - %s - %d: %.2f $\n",
+                        dvd.getTitle(), dvd.getCategory(), dvd.getDirector(), dvd.getLength(), dvd.getCost());
+                return;
+            }
+        }
+        System.out.println("No matching DVD found.");
+    }
+
+    public void searchByTitle(String title) {
+        ArrayList<DigitalVideoDisc> matchedDvds = new ArrayList<>();
+        for (int i = 0; i < itemsOrdered.size(); i++) {
+            DigitalVideoDisc dvd = itemsOrdered.get(i);
+            if (dvd.isMatch(title)) {
+                matchedDvds.add(dvd);
+            }
+        }
+        if (matchedDvds.isEmpty()) {
+            System.out.println("No matching DVD found.");
+            return;
+        }
+        System.out.printf("Matching DVDs (%d):\n", matchedDvds.size());
+        for (int i = 0; i < matchedDvds.size(); i++) {
+            DigitalVideoDisc dvd = matchedDvds.get(i);
+            System.out.printf("%d. DVD - %s - %s - %s - %d: %.2f $\n",
+                    i+1, dvd.getTitle(), dvd.getCategory(), dvd.getDirector(), dvd.getLength(), dvd.getCost());
+        }
     }
 }
