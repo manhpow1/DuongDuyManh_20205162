@@ -6,3 +6,12 @@ So, you can create a constructor to build a DVD by title and another constructor
 Week3
 In Java, arguments are passed by value. This means that when you pass a variable as an argument to a method, the value of the variable is copied and passed to the method, rather than a reference to the variable itself. Any changes made to the parameter inside the method are not reflected outside of the method, since only a copy of the original value was passed.
 However, when it comes to objects in Java, the reference to the object is passed by value. This means that when you pass an object to a method, a copy of the reference to the object is passed, but the object itself is not copied. So changes made to the object inside the method are visible outside of the method, since both the original reference and the copy refer to the same object in memory. This can sometimes lead to confusion and make it appear as if Java is pass by reference, but in reality it is still pass by value.
+
+Week4
+To use the Comparable interface approach for comparing items in the cart, you should implement the Comparable interface in the Media class or any other class representing the items in the cart.
+
+In the Media class, you should implement the compareTo() method to reflect the desired ordering. The method should return a negative integer if the current object is less than the other object, zero if they are equal, and a positive integer if the current object is greater than the other object based on the specified ordering criteria.
+
+Yes, you can have multiple ordering rules by implementing the Comparable interface. You can include conditional logic inside the compareTo() method to handle different ordering rules based on specific conditions. For example, you can check the type of media and apply different comparison logic accordingly.
+
+To modify the code to accommodate the different ordering rule for DVDs, you can create a subclass of Media called DVD with its own implementation of the compareTo() method. In the DVD class, you can consider the title, decreasing length, and cost to define the ordering. The DVD class would override the compareTo() method inherited from the Media class and provide its own implementation.
