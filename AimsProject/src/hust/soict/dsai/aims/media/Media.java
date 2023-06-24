@@ -1,78 +1,98 @@
 package hust.soict.dsai.aims.media;
+import java.time.Duration;
 import java.util.Comparator;
-public abstract class Media {
-    protected int id;
-    protected String title;
-    protected String category;
-    protected float cost;
-    public static final Comparator<Media> COMPARE_BY_TITLE_COST = new MediaComparatorByTitleCost();
-	public static final Comparator<Media> COMPARE_BY_COST_TITLE = new MediaComparatorByCostTitle();
-    public Media(int id, String title, String category, float cost) {
-        super();
-        this.id = id;
-        this.title = title;
-        this.category = category;
-        this.cost = cost;
-    }
 
-    public Media(String title, String category, float cost) {
-        super();
-        this.title = title;
-        this.category = category;
-        this.cost = cost;
-    }
+import hust.soict.dsai.aims.exception.PlayerException;
+public abstract class Media implements Comparable<Media> {
+
+    public static final Comparator<Media> COMPARE_BY_TITLE_COST = new MediaComparatorByTitleCost();
+    public static final Comparator<Media> COMPARE_BY_COST_TITLE = new MediaComparatorByCostTitle();
+
+    
+    private static int nbMedia = 0;
+    private int id;
+
+    private String title;
+    private String category;
+    private float cost;
 
     public Media(String title) {
-        super();
         this.title = title;
+		this.id = ++nbMedia;
     }
+    public Media(String title, String category) {
+        this.title = title;
+        this.category = category;
+        this.id = ++nbMedia;
+    }
+    public Media(String title, String category, float cost) {
+        this.title = title;
+        this.category = category;
+        this.cost = cost;
+        this.id = ++nbMedia;
+    }
+    
 
     public int getId() {
         return id;
     }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getTitle() {
         return title;
+    }
+    public String getCategory() {
+        return category;
+    }
+    public float getCost() {
+        return cost;
     }
 
     public void setTitle(String title) {
         this.title = title;
     }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public float getCost() {
-        return cost;
-    }
-
-    public void setCost(float cost) {
-        this.cost = cost;
-    }
-
-    public abstract void play();
+    
 
     public boolean isMatch(String title) {
-        return this.title.equalsIgnoreCase(title);
+        return this.getTitle().toLowerCase().contains(title.toLowerCase());
     }
+
+    public void play() {
+        System.out.println("Playing media");
+    }
+    
+    public String playGUI() throws PlayerException {
+        return "Playing media";
+    }
+
+    public String formatDuration(int durationInSeconds) {
+        Duration duration = Duration.ofSeconds(durationInSeconds);
+        return String.format("%02d:%02d", duration.toMinutes(), duration.minusMinutes(duration.toMinutes()).getSeconds());
+    }
+    
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
+        if (obj == this) {
             return true;
         }
-        if (obj == null || getClass() != obj.getClass()) {
+        if (!(obj instanceof Media)) {
             return false;
         }
-        Media otherMedia = (Media) obj;
-        return title.equals(otherMedia.title);
+        return ((Media)obj).getTitle() == this.getTitle();
+    }
+
+    @Override
+    public String toString() {
+        return "Media: " + this.getTitle() +
+                " - Category: " + this.getCategory() +
+                " - Cost: " + this.getCost() + "$";
+    }
+
+    @Override
+    public int compareTo(Media other) {
+        int titleComparison = this.getTitle().compareTo(other.getTitle());
+        if (titleComparison != 0) {
+            return titleComparison;
+        } else {
+            return Double.compare(this.getCost(), other.getCost());
+        }
     }
 }

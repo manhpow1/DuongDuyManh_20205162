@@ -1,42 +1,49 @@
 package hust.soict.dsai.aims.media;
+public class Disc extends Media {
 
-public class Disc extends Media{
-    protected int length;
-    protected String director;
-    public int getLength() {
-        return length;
-    }
+    private String director;
+    private int length;
+
     public String getDirector() {
-        return director;
-    }
-    public Disc(int id, String title, String category, float cost, String director, int length) {
-        super(id, title, category, cost);
-        this.director = director;
-        this.length = length;
-    }
-    public void setDirector(String director) {
-        this.director = director;
-    }
-    public void setLength(int length) {
-        this.length = length;
-    }
-    public Disc(int id, String title, String category, float cost, int length, String director) {
-        super(id, title, category, cost);
-        this.length = length;
-        this.director = director;
-    }
-    public Disc(int id, String title, String category, float cost) {
-        super(id, title, category, cost);
-    }
-    public Disc( String title, String category, float cost) {
-        super(title, category, cost);
-    }
-    public Disc( String title) {
+		return director;
+	}
+	public int getLength() {
+		return length;
+	}
+    public Disc(String title) {
         super(title);
     }
-    @Override
-    public void play() {
-        System.out.println("Playing disc: " + getTitle());
-        System.out.println("Disc length: " + length);
+    public Disc(String title, String category, float cost) {
+        super(title, category, cost);
     }
+    public Disc(String title, String category, String director, float cost) {
+        super(title, category, cost);
+        this.director = director;
+    }
+    public Disc(String title, String category, String director, int length, float cost) {
+        super(title, category, cost);
+        this.director = director;
+        this.length = length;
+    }
+    
+    @Override
+    public int compareTo(Media other) {
+        if (other instanceof Disc) {
+            Disc otherDVD = (Disc) other;
+            int titleComparison = this.getTitle().compareTo(otherDVD.getTitle());
+            if (titleComparison != 0) {
+                return titleComparison;
+            } else {
+                int lengthComparison = Integer.compare(otherDVD.getLength(), this.getLength());
+                if (lengthComparison != 0) {
+                    return lengthComparison;
+                } else {
+                    return Double.compare(this.getCost(), otherDVD.getCost());
+                }
+            }
+        } else {
+            return super.compareTo(other);
+        }
+    }
+
 }
